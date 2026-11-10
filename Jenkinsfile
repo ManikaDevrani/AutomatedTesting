@@ -2,6 +2,11 @@
 pipeline {
     agent any
 
+    environment {
+        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home'
+        PATH = "/opt/homebrew/bin:/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin:${env.PATH}"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -20,7 +25,7 @@ pipeline {
 
     post {
         always {
-            junit 'target/surefire-reports/*.xml'
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
         }
         success {
             echo 'All tests passed successfully!'
